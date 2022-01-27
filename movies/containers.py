@@ -28,7 +28,7 @@ class Container(containers.DeclarativeContainer):
         config.finder.type,
         csv=csv_finder,
         sqlite=sqlite_finder,
-    )
+)
 
     lister = providers.Factory(
         listers.MovieLister,
