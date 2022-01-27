@@ -1,16 +1,23 @@
-# This is a sample Python script.
+""" Main module. """
 
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+from dependency_injector.wiring import Provide, inject
+
+from .listers import MovieLister
+from .containers import Container
+
+@inject
+def main(lister: MovieLister = Provide[Container.lister]) -> None:
+    print("Francis Lawrence movies:")
+    for movie in lister.movies_directed_by("Francis Lawrence"):
+        print("\t-", movie)
+
+    print("2016 movies:")
+    for movie in lister.movies_released_in(2016):
+        print("\t-", movie)
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
+if __name__ == "__main__":
+    container = Container()
+    container.wire(modules=[__name__])
 
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    main()
