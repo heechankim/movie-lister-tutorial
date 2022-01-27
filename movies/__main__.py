@@ -1,4 +1,5 @@
 """ Main module. """
+import sys
 
 from dependency_injector.wiring import Provide, inject
 
@@ -18,6 +19,7 @@ def main(lister: MovieLister = Provide[Container.lister]) -> None:
 
 if __name__ == "__main__":
     container = Container()
-    container.wire(modules=[__name__])
+    container.config.finder.type.from_env("MOVIE_FINDER_TYPE")
+    container.wire(modules=[sys.modules[__name__]])
 
     main()

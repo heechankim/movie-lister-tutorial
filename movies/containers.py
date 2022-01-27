@@ -18,7 +18,19 @@ class Container(containers.DeclarativeContainer):
         delimiter=config.finder.csv.delimiter,
     )
 
+    sqlite_finder = providers.Singleton(
+        finders.SqliteMovieFinder,
+        movie_factory=movie.provider,
+        path=config.finder.sqlite.path,
+    )
+
+    finder = providers.Selector(
+        config.finder.type,
+        csv=csv_finder,
+        sqlite=sqlite_finder,
+    )
+
     lister = providers.Factory(
         listers.MovieLister,
-        movie_finder=csv_finder
+        movie_finder=finder,
     )
